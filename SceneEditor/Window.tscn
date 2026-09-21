@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cfxfma6bfw5uc"]
+
+[ext_resource type="Script" uid="uid://c16v8aobsyiu7" path="res://SceneEditor/Script.cs" id="1_my4g0"]
+[ext_resource type="Script" uid="uid://2obot31d4wf2" path="res://SceneEditor/GraphEdit_Internal.cs" id="2_blgrt"]
+
+[node name="Window" type="Control" unique_id=1027031038]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_my4g0")
+
+[node name="GraphEdit" type="GraphEdit" parent="." unique_id=1968806871]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/grid_major = Color(0, 0, 0, 0.39215687)
+theme_override_colors/grid_minor = Color(0.5647059, 0.5803922, 0.54901963, 0.17254902)
+right_disconnects = true
+script = ExtResource("2_blgrt")

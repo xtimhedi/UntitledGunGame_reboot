@@ -1,0 +1,191 @@
+[gd_scene format=3 uid="uid://dkyg5vwyeoi5s"]
+
+[ext_resource type="Script" uid="uid://cmynrraa6dgco" path="res://CrashScreen/Script.cs" id="1_lg80m"]
+[ext_resource type="Script" uid="uid://08e8g7mxn33x" path="res://CrashScreen/PanelContainer_internal.cs" id="2_qlux3"]
+[ext_resource type="Texture2D" uid="uid://dqqkxcmbryl7s" path="res://icon.svg" id="2_r04kc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r04kc"]
+bg_color = Color(0.07015244, 0.07015244, 0.070152394, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o5p76"]
+bg_color = Color(0.8661112, 0.86611134, 0.86611146, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qlux3"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Window" type="Control" unique_id=806491069]
+custom_maximum_size = Vector2(600, 500)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lg80m")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=239004835]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 26.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_r04kc")
+script = ExtResource("2_qlux3")
+
+[node name="Label" type="Label" parent="PanelContainer" unique_id=515556801]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Godot Engine Crash Reporter"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=662821900]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer" unique_id=1612781242]
+custom_maximum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("2_r04kc")
+
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer" unique_id=1975290739]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer2" unique_id=373673997]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Minimize" type="Button" parent="PanelContainer/MarginContainer2/HBoxContainer" unique_id=681674190]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "-"
+
+[node name="Close" type="Button" parent="PanelContainer/MarginContainer2/HBoxContainer" unique_id=1269334511]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "🗙"
+
+[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1248382707]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -464.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2" unique_id=2121252501]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="PanelContainer2/VBoxContainer" unique_id=1897958068]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "   Der folgende Prozess ist abgestürzt:"
+
+[node name="Label3" type="Label" parent="PanelContainer2/VBoxContainer" unique_id=340483905]
+layout_mode = 2
+text = "kein text"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="PanelContainer2/VBoxContainer" unique_id=1162972390]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "   Bitte beschreiben Sie, was Sie unmittelbar vor dem Unfall getan haben:"
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer2/VBoxContainer" unique_id=150736446]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer2/VBoxContainer/MarginContainer" unique_id=1568888301]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.17880943, 0.17880979, 0.1788095, 1)
+theme_override_colors/font_placeholder_color = Color(0.02402972, 0.024029834, 0.024029743, 0.6)
+theme_override_font_sizes/font_size = 10
+theme_override_styles/normal = SubResource("StyleBoxFlat_o5p76")
+placeholder_text = "Unfallumstände"
+
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer2/VBoxContainer" unique_id=1619778837]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+
+[node name="Panel" type="Panel" parent="PanelContainer2/VBoxContainer/MarginContainer2" unique_id=79995362]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qlux3")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer2/VBoxContainer/MarginContainer2/Panel" unique_id=1556651225]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="PanelContainer2/VBoxContainer/MarginContainer2/Panel/ScrollContainer" unique_id=1974188968]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Wir entschuldigen uns für die Unannehmlichkeiten. 
+Bitte senden Sie uns diesen Absturzbericht, damit wir unsere Software verbessern können."
+
+[node name="Button" type="Button" parent="PanelContainer2/VBoxContainer" unique_id=1080621488]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 10
+text = "Callstack in die Zwischenablage kopieren"
+
+[node name="Label4" type="Label" parent="PanelContainer2/VBoxContainer" unique_id=490342448]
+modulate = Color(0.76380855, 0.76380855, 0.7638085, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "     Bereit zum Senden an den Server"
+
+[node name="MarginContainer3" type="MarginContainer" parent="PanelContainer2/VBoxContainer" unique_id=2111813441]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2/VBoxContainer/MarginContainer3" unique_id=2101962087]
+layout_mode = 2
+alignment = 2
+
+[node name="Button" type="Button" parent="PanelContainer2/VBoxContainer/MarginContainer3/HBoxContainer" unique_id=218445951]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Absturzbericht einreichen"
+
+[node name="Button2" type="Button" parent="PanelContainer2/VBoxContainer/MarginContainer3/HBoxContainer" unique_id=1393196989]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Nicht senden"
+
+[node name="Label" type="Label" parent="PanelContainer2/VBoxContainer/MarginContainer3" unique_id=1513878034]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "        Shift+Enter: einreichen
+        Escape: stornieren"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer2/HBoxContainer/Minimize" to="." method="MinimizeWindow"]
+[connection signal="pressed" from="PanelContainer/MarginContainer2/HBoxContainer/Close" to="." method="CloseWindow"]
+[connection signal="pressed" from="PanelContainer2/VBoxContainer/Button" to="." method="CopyCallstack"]
+[connection signal="pressed" from="PanelContainer2/VBoxContainer/MarginContainer3/HBoxContainer/Button" to="." method="CloseWithSend"]
+[connection signal="pressed" from="PanelContainer2/VBoxContainer/MarginContainer3/HBoxContainer/Button2" to="." method="CloseWindow"]
