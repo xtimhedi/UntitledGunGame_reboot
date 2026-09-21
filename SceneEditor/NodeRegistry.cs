@@ -23,7 +23,8 @@ namespace UGGR.SceneEditor
             () => new Display(),
             () => new Branch(),
             () => new ButtonNode(),
-            () => new ExecTest()
+            () => new ExecTest(),
+            () => new GreaterThan()
         };
     }
 }

@@ -90,6 +90,7 @@ public partial class GraphEdit_Internal : GraphEdit
         math.AddItem("Subtract", 1);
         math.AddItem("Multiply", 2);
         math.AddItem("Divide", 3);
+        math.AddItem(">", 9);
 
         menu.AddSubmenuNodeItem("Math", math);
 
