@@ -46,5 +46,47 @@ namespace UGGR.SceneEditor
                 ShadowOffset = new Vector2(1, -1)
             };
         }
+
+        public static StyleBoxFlat VarTitlebar(Color color)
+        {
+            Color darkened = color.Darkened(0.08f);
+            return new StyleBoxFlat
+            {
+                BgColor = darkened,
+                BorderWidthLeft = 4,
+                BorderWidthRight = 4,
+                BorderWidthTop = 4,
+                BorderWidthBottom = 4,
+                BorderColor = color,
+                CornerRadiusTopLeft = 64,
+                CornerRadiusTopRight = 64,
+                CornerRadiusBottomLeft = 64,
+                CornerRadiusBottomRight = 64,
+                ShadowColor = new Color(color.R, color.G, color.B, color.A / 8f),
+                ShadowSize = 1,
+                ShadowOffset = new Vector2(1, -1),
+            };
+        }
+
+        public static StyleBoxFlat VarTitlebarSelected(Color color)
+        {
+            Color darkened = color.Lightened(0.08f);
+            return new StyleBoxFlat
+            {
+                BgColor = darkened,
+                BorderWidthLeft = 4,
+                BorderWidthRight = 4,
+                BorderWidthTop = 4,
+                BorderWidthBottom = 4,
+                BorderColor = color,
+                CornerRadiusTopLeft = 64,
+                CornerRadiusTopRight = 64,
+                CornerRadiusBottomLeft = 64,
+                CornerRadiusBottomRight = 64,
+                ShadowColor = new Color(color.R, color.G, color.B, color.A / 8f),
+                ShadowSize = 1,
+                ShadowOffset = new Vector2(1, -1)
+            };
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UGGR.SceneEditor.Nodes;
 using UGGR.SceneEditor.Nodes.Executory;
+using UGGR.SceneEditor.Nodes.Variables;
 
 namespace UGGR.SceneEditor
 {
@@ -24,7 +25,13 @@ namespace UGGR.SceneEditor
             () => new Branch(),
             () => new ButtonNode(),
             () => new ExecTest(),
-            () => new GreaterThan()
+            () => new GreaterThan(),
+
+            // var shite
+
+            () => new VariableRef(),
+            () => new Get()
+
         };
     }
 }

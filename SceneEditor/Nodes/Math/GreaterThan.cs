@@ -6,7 +6,7 @@ namespace UGGR.SceneEditor.Nodes
     {
         public override void _Ready()
         {
-            NodeType = NodeTypeEnum.Pure;
+            NodeType = NodeTypeEnum.Impure;
             Title = "Greater Than (Impure)";
             AddChild(new Label { Text = "Exec" });
             AddChild(new Label { Text = "A        Result" });
@@ -16,7 +16,7 @@ namespace UGGR.SceneEditor.Nodes
             SetupSlot(2, true, PinTypeEnum.Integer, false, 0);
             InputValues[1] = 0;
             InputValues[2] = 0;
-            OutputValues[2] = false;
+            OutputValues[1] = false;
             AddThemeStyleboxOverride("titlebar", NodeMaterials.Titlebar(Colors.LightGreen.Darkened(0.2f)));
             AddThemeStyleboxOverride("titlebar_selected", NodeMaterials.TitlebarSelected(Colors.LightGreen.Darkened(0.2f)));
 
@@ -28,7 +28,8 @@ namespace UGGR.SceneEditor.Nodes
             int b = InputValues.TryGetValue(2, out var valB) && valB is int intB ? intB : 0;
 
             bool result = a > b;
-            OutputValues[2] = result;
+            OutputValues[1] = result;
+            PushOutputsToDataPins();
             TriggerNextExecNode(0);
         }
     }

@@ -27,11 +27,24 @@ namespace UGGR.SceneEditor.Nodes
 
         public override void _Process(double delta)
         {
-            int a = InputValues.TryGetValue(0, out var valA) && valA is int intA ? intA : 0;
-            bool b = InputValues.TryGetValue(1, out var valB) && valB is bool boolA ? boolA : false;
-            display0.Text = a.ToString();
-            display1.Text = b.ToString();
-            PushOutputsToDataPins();
+            if (InputValues.TryGetValue(0, out var valA) && valA != null)
+            {
+                try
+                {
+                    int a = valA is Variant vA ? vA.AsInt32() : Convert.ToInt32(valA);
+                    display0.Text = a.ToString();
+                }
+                catch { display0.Text = "0"; }
+            }
+            if (InputValues.TryGetValue(1, out var valB) && valB != null)
+            {
+                try
+                {
+                    bool b = valB is Variant vB ? vB.AsBool() : Convert.ToBoolean(valB);
+                    display1.Text = b.ToString();
+                }
+                catch { display1.Text = "False"; }
+            }
         }
     }
 

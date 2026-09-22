@@ -6,6 +6,8 @@ namespace UGGR.SceneEditor
 {
     public partial class CustomGraphNode : GraphNode
     {
+        private const float PortSize = 12.0f;
+        public int FactoryId { get; set; } = -1;
         public NodeTypeEnum NodeType { get; set; }
 
         // Local storage for pin data
@@ -87,5 +89,42 @@ namespace UGGR.SceneEditor
         // Virtual hooks for children
         public virtual object GetOutputValue(int outputPortIndex) => OutputValues.TryGetValue(outputPortIndex, out var val) ? val : null;
         public virtual void Execute(int inputExecPortIndex) { }
+        public override void _DrawPort(int slotIndex, Vector2I pos, bool left, Color color)
+        {
+            // 1. Get the slot type depending on whether it's an input (left) or output (right) port
+            int slotType = left ? GetSlotTypeLeft(slotIndex) : GetSlotTypeRight(slotIndex);
+
+            // 2. Check if it's an execution pin
+            if (slotType == (int)PinTypeEnum.Execution)
+            {
+                // Draw Triangle
+                Vector2[] basePoints = new Vector2[]
+                {
+                    new Vector2(0.5f, 0.0f),   // Tip pointing right
+                    new Vector2(-0.5f, -0.5f), // Bottom left
+                    new Vector2(-0.5f, 0.5f)   // Top left
+                };
+
+                Vector2[] finalPoints = new Vector2[3];
+                for (int i = 0; i < 3; i++)
+                {
+                    finalPoints[i] = (basePoints[i] * PortSize) + pos;
+                }
+
+                DrawColoredPolygon(finalPoints, color);
+            }
+            else if (slotType == (int)PinTypeEnum.Boolean)
+            {
+                DrawRect(new Rect2(pos - new Vector2I((int)PortSize / 2, (int)PortSize / 2), new Vector2(PortSize, PortSize)), color);
+
+                DrawRect(new Rect2(pos - new Vector2I(((int)PortSize / 2) - 2, ((int)PortSize / 2) - 2), new Vector2(PortSize - 4, PortSize - 4)), color.Darkened(0.28f));
+            }
+            else
+            {
+                // Draw Circle
+                float radius = PortSize * 0.35f; // Adjust radius as needed
+                DrawCircle(pos, radius, color);
+            }
+        }
     }
 }

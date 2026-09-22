@@ -12,14 +12,101 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_my4g0")
 
-[node name="GraphEdit" type="GraphEdit" parent="." unique_id=1968806871]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1551486953]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=211332476]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer" unique_id=302739896]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/VBoxContainer/MarginContainer" unique_id=1724096312]
+layout_mode = 2
+
+[node name="Titlebar" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/MarginContainer/PanelContainer" unique_id=1086378951]
+layout_mode = 2
+
+[node name="GraphEdit" type="GraphEdit" parent="HBoxContainer/VBoxContainer" unique_id=1968806871]
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_colors/grid_major = Color(0, 0, 0, 0.39215687)
 theme_override_colors/grid_minor = Color(0.5647059, 0.5803922, 0.54901963, 0.17254902)
+scroll_offset = Vector2(-84, -5)
 right_disconnects = true
 script = ExtResource("2_blgrt")
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer" unique_id=268769085]
+custom_maximum_size = Vector2(200, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/PanelContainer" unique_id=1990369303]
+custom_maximum_size = Vector2(200, -1)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PanelContainer/ScrollContainer" unique_id=618798839]
+custom_maximum_size = Vector2(200, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer" unique_id=1164002637]
+layout_mode = 2
+text = "New Variable
+"
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer" unique_id=490776892]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer" unique_id=2129689197]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LabelButtons" type="VBoxContainer" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer" unique_id=636225323]
+layout_mode = 2
+
+[node name="BooleanVariable" type="HBoxContainer" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons" unique_id=1157225253]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons/BooleanVariable" unique_id=12213569]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Test"
+
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons/BooleanVariable" unique_id=1589571109]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "State"
+
+[node name="Button" type="Button" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons/BooleanVariable" unique_id=179176668]
+layout_mode = 2
+text = "+"
+
+[node name="IntegerVariable" type="HBoxContainer" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons" unique_id=1559481994]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons/IntegerVariable" unique_id=1475898061]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Test"
+
+[node name="CheckButton" type="LineEdit" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons/IntegerVariable" unique_id=512747183]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Value"
+
+[node name="Button" type="Button" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons/IntegerVariable" unique_id=467198956]
+layout_mode = 2
+text = "+"
