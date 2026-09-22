@@ -7,7 +7,7 @@ namespace UGGR.SceneEditor
 {
     public partial class Script : Control
     {
-        public GraphEdit_Internal Editor;
+        public static GraphEdit_Internal Editor;
         public VBoxContainer LabelButtons;
         private void PopulateNodes()
         {
@@ -19,8 +19,7 @@ namespace UGGR.SceneEditor
         {
             PopulateNodes();
             Editor.OnContextMenuItemSelected += OnContextItemSelected;
-            LabelButtons.AddChild(new BooleanVariable("TestBool"));
-            LabelButtons.AddChild(new IntegerVariable("TestInt"));
+            LabelButtons.AddChild(new VariableVisualizer(GraphEdit_Internal.Variables[0]));
         }
 
         private void OnContextItemSelected(long id)

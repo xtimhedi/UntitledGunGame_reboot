@@ -153,16 +153,22 @@ public partial class GraphEdit_Internal : GraphEdit
         }
     }
 
-    public void PlaceNode(int id)
+    public void PlaceNode(int id, int VarRef = -1)
     {
         if (id >= 0 && id < NodeRegistry.NodeFactories.Count)
         {
             CustomGraphNode node = NodeRegistry.NodeFactories[id].Invoke();
+            Vector2 localMousePos = GetLocalMousePosition();
+
+            if (node is VariableRef vref)
+            {
+                vref.ReferenceID = VarRef;
+                localMousePos = GetWindow().Size / 2;
+            } 
 
             // Track the ID so we know what factory to use when loading later
             node.FactoryId = id;
 
-            Vector2 localMousePos = GetLocalMousePosition();
             node.PositionOffset = (localMousePos + ScrollOffset) / Zoom;
 
             AddChild(node);

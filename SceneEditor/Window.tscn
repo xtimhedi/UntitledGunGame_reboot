@@ -38,7 +38,6 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/grid_major = Color(0, 0, 0, 0.39215687)
 theme_override_colors/grid_minor = Color(0.5647059, 0.5803922, 0.54901963, 0.17254902)
-scroll_offset = Vector2(-84, -5)
 right_disconnects = true
 script = ExtResource("2_blgrt")
 
@@ -76,37 +75,3 @@ size_flags_vertical = 3
 
 [node name="LabelButtons" type="VBoxContainer" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer" unique_id=636225323]
 layout_mode = 2
-
-[node name="BooleanVariable" type="HBoxContainer" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons" unique_id=1157225253]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons/BooleanVariable" unique_id=12213569]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Test"
-
-[node name="CheckButton" type="CheckButton" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons/BooleanVariable" unique_id=1589571109]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "State"
-
-[node name="Button" type="Button" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons/BooleanVariable" unique_id=179176668]
-layout_mode = 2
-text = "+"
-
-[node name="IntegerVariable" type="HBoxContainer" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons" unique_id=1559481994]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons/IntegerVariable" unique_id=1475898061]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Test"
-
-[node name="CheckButton" type="LineEdit" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons/IntegerVariable" unique_id=512747183]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Value"
-
-[node name="Button" type="Button" parent="HBoxContainer/PanelContainer/ScrollContainer/VBoxContainer/MarginContainer/PanelContainer/LabelButtons/IntegerVariable" unique_id=467198956]
-layout_mode = 2
-text = "+"
