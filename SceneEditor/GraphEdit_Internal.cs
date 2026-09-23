@@ -65,6 +65,14 @@ public partial class GraphEdit_Internal : GraphEdit
             {
                 getNode2.UpdateVariableBinding();
             }
+            if (toNode is Set setNode)
+            {
+                setNode.UpdateVariableBinding();
+            }
+            if (fromNode is Set setNode2)
+            {
+                setNode2.UpdateVariableBinding();
+            }
         }
         else
         {
@@ -84,6 +92,14 @@ public partial class GraphEdit_Internal : GraphEdit
         if (fromNode is Get getNode2)
         {
             getNode2.UpdateVariableBinding();
+        }
+        if (toNode is Set setNode)
+        {
+            setNode.UpdateVariableBinding();
+        }
+        if (fromNode is Set setNode2)
+        {
+            setNode2.UpdateVariableBinding();
         }
         DisconnectNode(fromNodeName, (int)fromPort, toNodeName, (int)toPort);
         CleanUpCustomConnectionCache(fromNodeName, fromPort, toNodeName, toPort);
@@ -129,8 +145,10 @@ public partial class GraphEdit_Internal : GraphEdit
         menu.AddItem("Branch", 6);
         menu.AddItem("Button", 7);
         menu.AddItem("Exec Test", 8);
-        menu.AddItem("Var Ref", 10);
+
         menu.AddItem("Var Get", 11);
+        menu.AddItem("Var Set", 12);
+        menu.AddItem("Not", 13);
 
         menu.AddChild(math);
         AddChild(menu);
@@ -165,8 +183,6 @@ public partial class GraphEdit_Internal : GraphEdit
                 vref.ReferenceID = VarRef;
                 localMousePos = GetWindow().Size / 2;
             } 
-
-            // Track the ID so we know what factory to use when loading later
             node.FactoryId = id;
 
             node.PositionOffset = (localMousePos + ScrollOffset) / Zoom;
@@ -174,7 +190,6 @@ public partial class GraphEdit_Internal : GraphEdit
             AddChild(node);
         }
     }
-
     private void OnDeleteNodesRequest(Godot.Collections.Array<StringName> nodes)
     {
         foreach (StringName nodeName in nodes)
@@ -218,7 +233,7 @@ public partial class GraphEdit_Internal : GraphEdit
         {
             if (child is CustomGraphNode)
             {
-                RemoveChild(child); // Crucial! Frees the name immediately so loaded nodes can use it
+                RemoveChild(child);
                 child.QueueFree();
             }
         }
@@ -226,8 +241,22 @@ public partial class GraphEdit_Internal : GraphEdit
 
     public void SaveGraph(string path)
     {
-        var nodesData = new List<Dictionary<string, object>>();
+        // 1. Serialize Variables
+        var varsData = new List<Dictionary<string, object>>();
+        foreach (IVar v in Variables)
+        {
+            varsData.Add(new Dictionary<string, object>
+            {
+                { "Name", v.Name },
+                { "id", v.id },
+                { "type", (int)v.type },
+                // Use Godot's built-in tool to turn any Variant (Color, Vector3, etc.) into a safe string
+                { "value", GD.VarToStr(v.value) }
+            });
+        }
 
+        // 2. Serialize Nodes
+        var nodesData = new List<Dictionary<string, object>>();
         foreach (Node child in GetChildren())
         {
             if (child is CustomGraphNode gnode)
@@ -235,15 +264,22 @@ public partial class GraphEdit_Internal : GraphEdit
                 var nodeData = new Dictionary<string, object>
                 {
                     {"Name", gnode.Name.ToString() },
-                    {"FactoryId", gnode.FactoryId }, // Save the type so we can restore it!
+                    {"FactoryId", gnode.FactoryId },
                     {"PosX", gnode.PositionOffset.X },
                     {"PosY", gnode.PositionOffset.Y }
                 };
+
+                // If this is a VariableRef node, we should probably save its ReferenceID too!
+                if (gnode is VariableRef vref)
+                {
+                    nodeData.Add("VarRefID", vref.ReferenceID);
+                }
+
                 nodesData.Add(nodeData);
             }
         }
 
-        // Map Godot Collections to pure C# lists/dictionaries so System.Text.Json doesn't break
+        // 3. Serialize Connections
         var csharpConns = new List<Dictionary<string, object>>();
         foreach (Godot.Collections.Dictionary conn in GetConnectionList())
         {
@@ -256,8 +292,10 @@ public partial class GraphEdit_Internal : GraphEdit
             });
         }
 
+        // Combine everything
         var saveData = new Dictionary<string, object>
         {
+            { "Variables", varsData },
             { "Nodes", nodesData },
             { "Connections", csharpConns }
         };
@@ -281,27 +319,45 @@ public partial class GraphEdit_Internal : GraphEdit
         string jsonString = file.GetAsText();
         var saveData = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonString);
 
-        ClearConnections();
+        // --- 1. LOAD VARIABLES FIRST ---
+        // We load these first so that when nodes are created, the Variables list is already populated
+        if (saveData.TryGetValue("Variables", out JsonElement varsElement))
+        {
+            Variables.Clear();
+            foreach (JsonElement varElement in varsElement.EnumerateArray())
+            {
+                Variables.Add(new IVar
+                {
+                    Name = varElement.GetProperty("Name").GetString(),
+                    id = varElement.GetProperty("id").GetInt32(),
+                    type = (Variant.Type)varElement.GetProperty("type").GetInt32(),
+                    // Convert the string back into a proper Godot Variant
+                    value = GD.StrToVar(varElement.GetProperty("value").GetString())
+                });
+            }
+        }
 
+        // --- 2. CLEAR EXISTING GRAPH ---
+        ClearConnections();
         foreach (Node child in GetChildren())
         {
             if (child is CustomGraphNode)
             {
-                RemoveChild(child); // Crucial! Frees the name immediately so loaded nodes can use it
+                RemoveChild(child);
                 child.QueueFree();
             }
         }
 
+        // --- 3. LOAD NODES ---
         if (saveData.TryGetValue("Nodes", out JsonElement nodesElement))
         {
             foreach (JsonElement nodeElement in nodesElement.EnumerateArray())
             {
                 string name = nodeElement.GetProperty("Name").GetString();
                 int factoryId = nodeElement.GetProperty("FactoryId").GetInt32();
-                float posX = (float)nodeElement.GetProperty("PosX").GetDouble(); // Fixed typos
-                float posY = (float)nodeElement.GetProperty("PosY").GetDouble(); // Fixed typos
+                float posX = (float)nodeElement.GetProperty("PosX").GetDouble();
+                float posY = (float)nodeElement.GetProperty("PosY").GetDouble();
 
-                // Re-create the specific subclass via the registry!
                 if (factoryId >= 0 && factoryId < NodeRegistry.NodeFactories.Count)
                 {
                     CustomGraphNode graphNode = NodeRegistry.NodeFactories[factoryId].Invoke();
@@ -309,11 +365,18 @@ public partial class GraphEdit_Internal : GraphEdit
                     graphNode.Name = name;
                     graphNode.PositionOffset = new Vector2(posX, posY);
 
+                    // Restore the Variable Reference ID if this node is a VarRef
+                    if (graphNode is VariableRef vref && nodeElement.TryGetProperty("VarRefID", out JsonElement varRefIdElement))
+                    {
+                        vref.ReferenceID = varRefIdElement.GetInt32();
+                    }
+
                     AddChild(graphNode);
                 }
             }
         }
 
+        // --- 4. LOAD CONNECTIONS ---
         if (saveData.TryGetValue("Connections", out JsonElement connectionsElement))
         {
             foreach (JsonElement connElement in connectionsElement.EnumerateArray())
@@ -323,7 +386,6 @@ public partial class GraphEdit_Internal : GraphEdit
                 string toNode = connElement.GetProperty("to_node").GetString();
                 int toPort = connElement.GetProperty("to_port").GetInt32();
 
-                // Call YOUR method, not ConnectNode, so your `DownstreamConnections` cache gets rebuilt
                 OnConnectionRequest(fromNode, fromPort, toNode, toPort);
             }
         }

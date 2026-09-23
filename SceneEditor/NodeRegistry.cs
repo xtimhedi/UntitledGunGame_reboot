@@ -7,6 +7,8 @@ using UGGR.SceneEditor.Nodes;
 using UGGR.SceneEditor.Nodes.Executory;
 using UGGR.SceneEditor.Nodes.Variables;
 
+
+
 namespace UGGR.SceneEditor
 {
     public static class NodeRegistry
@@ -30,7 +32,10 @@ namespace UGGR.SceneEditor
             // var shite
 
             () => new VariableRef(),
-            () => new Get()
+            () => new Get(),
+            () => new Set(),
+
+            () => new Not()
 
         };
     }

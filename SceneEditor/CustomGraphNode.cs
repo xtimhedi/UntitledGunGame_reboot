@@ -89,6 +89,7 @@ namespace UGGR.SceneEditor
         // Virtual hooks for children
         public virtual object GetOutputValue(int outputPortIndex) => OutputValues.TryGetValue(outputPortIndex, out var val) ? val : null;
         public virtual void Execute(int inputExecPortIndex) { }
+
         public override void _DrawPort(int slotIndex, Vector2I pos, bool left, Color color)
         {
             // 1. Get the slot type depending on whether it's an input (left) or output (right) port
@@ -115,16 +116,33 @@ namespace UGGR.SceneEditor
             }
             else if (slotType == (int)PinTypeEnum.Boolean)
             {
-                DrawRect(new Rect2(pos - new Vector2I((int)PortSize / 2, (int)PortSize / 2), new Vector2(PortSize, PortSize)), color);
+                // Save the current original transform matrix to restore it later
+                Transform2D originalTransform = GetCanvasTransform();
 
-                DrawRect(new Rect2(pos - new Vector2I(((int)PortSize / 2) - 2, ((int)PortSize / 2) - 2), new Vector2(PortSize - 4, PortSize - 4)), color.Darkened(0.28f));
+                // Move the drawing origin to 'pos' and rotate by 45 degrees
+                DrawSetTransform(pos, Mathf.DegToRad(45));
+
+                // Draw centered on Vector2.Zero because the transform already handles 'pos'
+                float halfSize = PortSize / 2f;
+                Rect2 outerRect = new Rect2(new Vector2(-halfSize, -halfSize), new Vector2(PortSize, PortSize));
+                DrawRect(outerRect, color);
+
+                // Draw inner diamond
+                float innerSize = PortSize - 4f;
+                float halfInnerSize = innerSize / 2f;
+                Rect2 innerRect = new Rect2(new Vector2(-halfInnerSize, -halfInnerSize), new Vector2(innerSize, innerSize));
+                DrawRect(innerRect, color.Darkened(0.28f));
+
+                // Reset transform so subsequent drawing commands aren't corrupted
+                DrawSetTransformMatrix(originalTransform);
             }
             else
             {
                 // Draw Circle
-                float radius = PortSize * 0.35f; // Adjust radius as needed
+                float radius = PortSize * 0.35f;
                 DrawCircle(pos, radius, color);
             }
         }
+
     }
 }
